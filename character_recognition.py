@@ -1,7 +1,6 @@
 import pyautogui
 # import PIL
 
-
 character = "assets/Corrin_head.png"
 
 spriteX, spriteY = pyautogui.locateCenterOnScreen(character, grayscale=False, confidence=0.3)
