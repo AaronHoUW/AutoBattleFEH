@@ -25,9 +25,15 @@ def locate_text(bs, text):
             y = data['top'][i]
             width = data['width'][i]
             height = data['height'][i]
-            print(x, y, width, height)
-            coordinates = (x + width, y + height)
+            coordinates = (bs.left + x + width, bs.top + y + height)
     return coordinates
+
+def locate_image(bs, image_path):
+    bluestackRegion = (bs.left, bs.top + 32, bs.width, bs.height - 32) 
+    borderx, bordery = pyautogui.locateCenterOnScreen(image_path, confidence=0.5, region=bluestackRegion)
+    if borderx & bordery:
+        pyautogui.moveTo(borderx, bordery)
+        # pyautogui.click()
 
 def debug_locate_text(bs):
     cur_screenshot = pyautogui.screenshot(region=(bs.left, bs.top + 32, bs.width, bs.height - 32)).convert('L')
@@ -37,14 +43,13 @@ def debug_locate_text(bs):
         if(data['text'][i] != ''):
             print(data['text'][i])
 
-
-def locate_image(bs, image_path):
-    bluestackRegion = (bs.left, bs.top + 32, bs.width, bs.height - 32) 
-    borderx, bordery = pyautogui.locateCenterOnScreen(image_path, confidence=0.5, region=bluestackRegion)
-    if borderx & bordery:
-        pyautogui.moveTo(borderx, bordery)
-        # pyautogui.click()
-    
+def debug_take_screenshot(bs):
+    cur_screenshot = pyautogui.screenshot(region=(bs.left, bs.top + 32, bs.width, bs.height - 32))
+    # cur_screenshot.show()
+    overlay = Image.open("assets/Button_Auto_Battle.png")
+    overlay = overlay.resize((100, 100))
+    cur_screenshot.paste(overlay, (0,0))
+    cur_screenshot.show()
 
 # character = "assets/Corrin_head.png"
 # spriteX, spriteY = pyautogui.locateCenterOnScreen(character, grayscale=False, confidence=0.3)
